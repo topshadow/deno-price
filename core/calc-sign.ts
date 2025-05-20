@@ -136,9 +136,9 @@ async function refreshTotken(keyword: string) {
         return;
     }
   await loadTaboByKeyword(keyword).then((r) => {
-    const rescookie = r.headers.get("set-cookie");
-
-    tokenCookie = calcRescookie(rescookie!);
+    const rescookie = r.headers.getSetCookie();
+console.log("res cookie:",rescookie)
+    tokenCookie = calcRescookie(rescookie.find(i=>i.includes('_m_h5'));
     lastTime=Date.now();
     return r.text();
   }).then((r) => console.log(r));

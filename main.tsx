@@ -52,6 +52,6 @@ app.get("/product/price", (c) => c.render(<PricePage></PricePage>));
 app.get("/product/price/search", (c) => c.render(<PricePageSearch />));
 app.get('/product/data-sync', c => c.render(<DataSync />))
 app.get('/system/setting',c=>c.render(<SystemSetting/>))
-app.notFound((c) => c.html(indexHtml));
+// app.notFound((c) => c.html(indexHtml));
 
 export default app;

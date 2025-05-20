@@ -69,6 +69,7 @@ export async function PricePageSearch() {
     const searchResult = await loadTaobaoPassToken(keyword);
     taobaoData = searchResult.data.itemsArray;
   } catch (e) {
+    console.log(e)
     taobaoData = [];
   }
 
