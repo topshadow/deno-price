@@ -1,0 +1,47 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pinecone-router@7.1.0/dist/router.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+
+    </script>
+
+    <link rel="stylesheet" href="/static/output.css" />
+</head>
+
+<body>
+    <div x-data="app">
+        <template x-route="/" x-template>
+            <h1>Welcome!</h1>
+            <p>What's your name?</p>
+            <input x-on:enter="$router.navigate('/'+$el.value)"></input>
+        </template>
+
+        <template x-route="/:name" x-handler="handle" x-template>
+            <h1>Hello <span x-text="$params.name"></span>!</h1>
+            <button @click="$history.back()">Go Back</button>
+        </template>
+
+        <template x-route="notfound" x-template="/404.html"></template>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('app', () => ({
+                handle(context, controller) {
+                    if (context.params.name == 'easter') {
+                        this.$router.navigate('/easter-egg')
+                    }
+                    this.$router.navigate(context.params.name);
+                },
+            }))
+        })
+    </script>
+</body>
+
+</html>
