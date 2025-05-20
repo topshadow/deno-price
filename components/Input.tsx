@@ -1,7 +1,7 @@
 export function Input({ label,name,placeholder,type }:{label:string,name:string,placeholder?:string,type?:'text'|'password'}) {
   return (
-    <div class="flex w-full max-w-xs flex-col gap-1 text-on-surface dark:text-on-surface-dark">
-      <label for="textInputDefault" class="w-fit pl-0.5 text-sm">{label}</label>
+    <div x-data={JSON.stringify({label})} class="flex w-full max-w-xs flex-col gap-1 text-on-surface dark:text-on-surface-dark">
+      <label x-show="label" for="textInputDefault" class="w-fit pl-0.5 text-sm">{label}</label>
       <input
         id="textInputDefault"
         type={type}

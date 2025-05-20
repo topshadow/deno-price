@@ -2,7 +2,6 @@ import { md5 } from "@takker/md5";
 import { encodeHex } from "@std/encoding";
 import { TaobaoSearchResult } from "./taobao.ts";
 
-
 let str =
   '0fdbc1715b114b47260053a1a4d8574a&1747645726241&12574478&{"appId":"43356","params":"{\\"device\\":\\"HMA-AL00\\",\\"isBeta\\":\\"false\\",\\"grayHair\\":\\"false\\",\\"from\\":\\"nt_history\\",\\"brand\\":\\"HUAWEI\\",\\"info\\":\\"wifi\\",\\"index\\":\\"4\\",\\"rainbow\\":\\"\\",\\"schemaType\\":\\"auction\\",\\"elderHome\\":\\"false\\",\\"isEnterSrpSearch\\":\\"true\\",\\"newSearch\\":\\"false\\",\\"network\\":\\"wifi\\",\\"subtype\\":\\"\\",\\"hasPreposeFilter\\":\\"false\\",\\"prepositionVersion\\":\\"v2\\",\\"client_os\\":\\"Android\\",\\"gpsEnabled\\":\\"false\\",\\"searchDoorFrom\\":\\"srp\\",\\"debug_rerankNewOpenCard\\":\\"false\\",\\"homePageVersion\\":\\"v7\\",\\"searchElderHomeOpen\\":\\"false\\",\\"search_action\\":\\"initiative\\",\\"sugg\\":\\"_4_1\\",\\"sversion\\":\\"13.6\\",\\"style\\":\\"list\\",\\"ttid\\":\\"600000@taobao_pc_10.7.0\\",\\"needTabs\\":\\"true\\",\\"areaCode\\":\\"CN\\",\\"vm\\":\\"nw\\",\\"countryNum\\":\\"156\\",\\"m\\":\\"pc_sem\\",\\"page\\":1,\\"n\\":48,\\"q\\":\\"%E7%99%BD%E9%86%8B\\",\\"qSource\\":\\"manual\\",\\"pageSource\\":\\"tbpc.pc_sem_alimama/a.201856.d13\\",\\"tab\\":\\"all\\",\\"pageSize\\":48,\\"totalPage\\":100,\\"totalResults\\":4800,\\"sourceS\\":\\"0\\",\\"sort\\":\\"_coefp\\",\\"bcoffset\\":\\"\\",\\"ntoffset\\":\\"\\",\\"filterTag\\":\\"\\",\\"service\\":\\"\\",\\"prop\\":\\"\\",\\"loc\\":\\"\\",\\"start_price\\":null,\\"end_price\\":null,\\"startPrice\\":null,\\"endPrice\\":null,\\"itemIds\\":null,\\"p4pIds\\":null,\\"categoryp\\":\\"\\",\\"myCNA\\":\\"rps3ILBQqgwBASQJikz/gasi\\",\\"clk1\\":\\"88519ddce779dff6bf6bd616c955c701\\",\\"refpid\\":\\"mm_2898300158_3078300397_115665800437\\"}"}';
 // 每2分钟刷新一次token
@@ -119,33 +118,34 @@ function loadTaboByKeyword(keyword: string) {
   );
 }
 
-export async function loadTaobaoPassToken(keyword: string):Promise<TaobaoSearchResult> {
-    await refreshTotken(keyword);
+export async function loadTaobaoPassToken(
+  keyword: string,
+): Promise<TaobaoSearchResult> {
+  await refreshTotken(keyword);
   return await loadTaboByKeyword(keyword).then((r) => r.text()).then((r) => {
     // console.log(r)
     let tmp = r.substring(r.indexOf("("));
     return tmp.substring(1, tmp.length - 1);
-  }).then(r=>JSON.parse(r) as TaobaoSearchResult);
+  }).then((r) => JSON.parse(r) as TaobaoSearchResult);
 }
 async function refreshTotken(keyword: string) {
-    let passtime =  Date.now() - lastTime;
-    console.log(`passtime:$${passtime / 1000}秒$`);
-    
-    
-    if(tokenCookie&&Date.now()-lastTime<1000*60*2){
-        return;
-    }
+  let passtime = Date.now() - lastTime;
+  console.log(`passtime:$${passtime / 1000}秒$`);
+
+  if (tokenCookie && Date.now() - lastTime < 1000 * 60 * 2) {
+    return;
+  }
   await loadTaboByKeyword(keyword).then((r) => {
-    const rescookie = r.headers.getSetCookie();
-console.log("res cookie:",rescookie)
-    tokenCookie = calcRescookie(rescookie.find(i=>i.includes('_m_h5'));
-    lastTime=Date.now();
+    const rescookie = r.headers.get("set-cookie") as string;
+    console.log("res cookie:", rescookie);
+    tokenCookie = calcRescookie(rescookie);
+    lastTime = Date.now();
     return r.text();
   }).then((r) => console.log(r));
 }
 
 function calcRescookie(str: string) {
-    console.log("res cookie:",str)
+  console.log("res cookie:", str);
   let start = str.split("HttpOnly, ")[1];
 
   let segment = start.split(";").filter((m) => m.includes("_m_h5_tk")).map(

@@ -11,6 +11,7 @@ import {
   FullCloudGoodSku,
 } from "../../core/fullcloud.ts";
 import { IYouyunProduct } from "../../core/youyun.ts";
+import { Button } from "../../components/Button.tsx";
 enum Platform {
   Taobao = "taobao",
   Zxhx = "zxhx",
@@ -25,7 +26,10 @@ export function PricePage() {
         hx-select="#result"
         x-on:submit="loading=true"
       >
-        <Input label="关键字" name="keyword"></Input>
+        <div class="flex">
+        <Input label="" placeholder="关键字" name="keyword"></Input>
+          <Button type="submit" variant="primary" >搜索</Button>
+          </div>
       </form>
 
       <div id="result">
@@ -58,7 +62,7 @@ export function PricePage() {
 }
 function ProductGridContainer({ children }) {
   return (
-    <div class="grid md:grid-cols-6 gap-5 mt-4 sm:grid-cols-2 ">{children}</div>
+    <div class="grid md:grid-cols-6 gap-5 mt-4 grid-cols-2 ">{children}</div>
   );
 }
 export async function PricePageSearch() {
