@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno serve --env  -A --port 80 --watch main.tsx",
+    "dev": "deno serve --env  -A --port 8888 --watch main.tsx",
     "css": "npx @tailwindcss/cli -i ./static/input.css -o ./static/output.css --watch"
   },
   "imports": {
