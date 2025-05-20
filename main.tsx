@@ -39,7 +39,7 @@ app.use(
       : <DashLayout>{children}</DashLayout>
   ),
 );
-const indexHtml = await Deno.readTextFile("./static/index.html");
+// const indexHtml = await Deno.readTextFile("./static/index.html");
 app.get("/", (c) => c.render(<IndexPage></IndexPage>));
 // app.get("/", (c) => c.html(indexHtml));
 // passport
